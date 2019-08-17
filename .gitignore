@@ -1,3 +1,6 @@
-jshintrc.zip
-ozonestart.zip
-.jshintrc
+/jshintrc.zip
+/ozonestart.zip
+/.jshintrc
+/package.json
+/package-lock.json
+/node_modules/
