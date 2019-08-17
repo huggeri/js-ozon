@@ -130,17 +130,20 @@ function filters() {
       const price = parseFloat(cardPrice.textContent);
       const discount = elem.querySelector('.card-sale');
 
-      // фильтр по цене
-      if ((min.value && price < min.value) || (max.value && price > max.value)) {
-        elem.parentNode.style.display = 'none';
+      // если выбран
+      if (elem.parentNode.showed) {
+        // фильтр по цене
+        if ((min.value && price < min.value) || (max.value && price > max.value)) {
+          elem.parentNode.style.display = 'none';
 
-        // фильтр по акциям
-      } else if (discountCheckbox.checked && !discount) {
-        elem.parentNode.style.display = 'none';
+          // фильтр по акциям
+        } else if (discountCheckbox.checked && !discount) {
+          elem.parentNode.style.display = 'none';
 
-        // если ни для одного фильтра не указаны значения
-      } else {
-        elem.parentNode.style.display = '';
+          // если ни для одного фильтра не указаны значения
+        } else {
+          elem.parentNode.style.display = '';
+        }
       }
     }); 
   }
@@ -236,6 +239,8 @@ function renderCards(data) {
 
     // добавляем получившийся объект на страницу
     goodsWrapper.appendChild(card);
+    // добавляем своёство showed, обозначающее, выведена ли карточка на экран
+    card.showed = 'true';
   });
 }
 // ---end выводим карточки товара
@@ -256,6 +261,9 @@ function renderCatalog() {
     categories.add(elem.dataset.category); // у коллекций есть свои методы
   });
 
+  // добавляюем категорию "Все товары"
+  categories.add('Все товары');
+
   // добавляем категории в каталог
   categories.forEach((elem) => {
     const li = document.createElement('li');
@@ -275,11 +283,13 @@ function renderCatalog() {
     // которые относятся к этой категории
     if (event.target.tagName === 'LI') {
       cards.forEach((elem) => {
-        if (elem.dataset.category !== event.target.textContent) {
+        if ((elem.dataset.category !== event.target.textContent) && (event.target.textContent !== 'Все товары')) {
           elem.parentNode.style.display = 'none';
+          elem.parentNode.showed = '';
         }
         else {
           elem.parentNode.style.display = '';
+          elem.parentNode.showed = 'true';
         }
       });
     }
